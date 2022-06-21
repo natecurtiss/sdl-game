@@ -9,9 +9,10 @@ public sealed class Window : IDisposable
     public event Action? OnStart;
     public event Action? OnStop;
     public event Action<float>? OnUpdate;
-    public event Action? OnRender;
-    public event Action<Key>? OnKeyPress;
-    public event Action<Key>? OnKeyRelease;
+    internal event Action<float>? OnLateUpdate;
+    internal event Action? OnRender;
+    internal event Action<Key>? OnKeyPress;
+    internal event Action<Key>? OnKeyRelease;
     
     readonly IWindow _native;
 
@@ -36,7 +37,11 @@ public sealed class Window : IDisposable
             OnStart?.Invoke();
         };
         _native.Closing += OnStop;
-        _native.Update += dt => OnUpdate?.Invoke((float) dt);
+        _native.Update += dt =>
+        {
+            OnUpdate?.Invoke((float) dt);
+            OnLateUpdate?.Invoke((float) dt);
+        };
         _native.Render += _ => OnRender?.Invoke();
     }
     
