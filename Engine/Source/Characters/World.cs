@@ -1,31 +1,24 @@
 ﻿namespace Engine;
 
-public sealed class World
+public sealed class World : IDisposable
 {
     readonly List<Character> _characters = new();
 
-    public World(Window window)
-    {
-        window.OnStart += Start;
-        window.OnStop += Stop;
-        window.OnUpdate += Update;
-        window.OnRender += Render;
-    }
+    public World(Window window) => window.OnUpdate += Update;
 
-    public void Add(Character character)
+    internal void Add(Character character)
     {
         _characters.Add(character);
-        character.Start?.Do();
+        character.Start?.Invoke();
     }
     
-    public void Remove(Character character)
+    internal void Remove(Character character)
     {
         _characters.Add(character);
-        character.Stop?.Do();
+        character.Stop?.Invoke();
     }
-
-    void Start() => _characters.ForEach(c => c.Start?.Do());
-    void Stop() => _characters.ForEach(c => c.Stop?.Do());
-    void Update(float dt) => _characters.ForEach(c => c.Update?.Do(dt));
-    void Render() => _characters.ForEach(c => c.Render?.Do());
+    
+    void Update(float dt) => _characters.ForEach(c => c.Update?.Invoke(dt));
+    
+    public void Dispose() => _characters.ToList().ForEach(c => c.Dispose());
 }
