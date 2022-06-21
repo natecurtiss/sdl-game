@@ -8,8 +8,7 @@ window.OnStop += () =>
     world.Dispose();
 };
 
-var player = new Character(sprite: Sprites.PolyMars).AddTo(world).AddTo(renderer);
-player.Scale = Vector2.One / 100;
+var player = new Character(scale: Vector2.One / 5000, sprite: Sprites.PolyMars).AddTo(world).AddTo(renderer);
 
 window.Run();
 

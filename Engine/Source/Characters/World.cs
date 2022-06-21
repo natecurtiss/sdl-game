@@ -9,16 +9,16 @@ public sealed class World : IDisposable
     internal void Add(Character character)
     {
         _characters.Add(character);
-        character.Start?.Invoke();
+        character.Start?.Invoke(character);
     }
     
     internal void Remove(Character character)
     {
         _characters.Add(character);
-        character.Stop?.Invoke();
+        character.Stop?.Invoke(character);
     }
     
-    void Update(float dt) => _characters.ForEach(c => c.Update?.Invoke(dt));
+    void Update(float dt) => _characters.ForEach(c => c.Update?.Invoke(c, dt));
     
     public void Dispose() => _characters.ToList().ForEach(c => c.Dispose());
 }

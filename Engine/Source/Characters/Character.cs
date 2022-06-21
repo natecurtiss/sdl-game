@@ -4,9 +4,9 @@ namespace Engine;
 
 public sealed class Character : IDisposable
 {
-    internal readonly Action? Start;
-    internal readonly Action? Stop;
-    internal readonly Action<float>? Update;
+    internal readonly Action<Character>? Start;
+    internal readonly Action<Character>? Stop;
+    internal readonly Action<Character, float>? Update;
 
     public Vector2 Position;
     public float Rotation;
@@ -26,12 +26,23 @@ public sealed class Character : IDisposable
         }
     }
 
-    public Character(Action? start = null, Action? stop = null, Action<float>? update = null, Sprite? sprite = null)
+    public Character
+    (
+        Action<Character>? start = null, 
+        Action<Character>? stop = null, 
+        Action<Character, float>? update = null, 
+        Sprite? sprite = null, 
+        Vector2? position = null, 
+        float? rotation = null, 
+        Vector2? scale = null)
     {
         Start = start;
         Stop = stop;
         Update = update;
         Sprite = sprite;
+        Position = position ?? Vector2.Zero;
+        Rotation = rotation ?? 0f;
+        Scale = scale ?? Vector2.One;
     }
 
     public Character AddTo(World world)
