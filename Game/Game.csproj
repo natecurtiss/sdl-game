@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="_Source_\Engine" />
+      <ProjectReference Include="..\Engine\Engine.csproj" />
     </ItemGroup>
 
 </Project>

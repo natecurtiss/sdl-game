@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDLGame", "SDLGame.csproj", "{63D42FE2-C05B-42D1-B453-B9867C507F18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", "{7D88B1F1-6A62-4EFD-8B8B-FEE913D9936E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{90B7D0A3-8265-4B4E-BEEE-AE2702DF2AEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{63D42FE2-C05B-42D1-B453-B9867C507F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{63D42FE2-C05B-42D1-B453-B9867C507F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{63D42FE2-C05B-42D1-B453-B9867C507F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{63D42FE2-C05B-42D1-B453-B9867C507F18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D88B1F1-6A62-4EFD-8B8B-FEE913D9936E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D88B1F1-6A62-4EFD-8B8B-FEE913D9936E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D88B1F1-6A62-4EFD-8B8B-FEE913D9936E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D88B1F1-6A62-4EFD-8B8B-FEE913D9936E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90B7D0A3-8265-4B4E-BEEE-AE2702DF2AEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90B7D0A3-8265-4B4E-BEEE-AE2702DF2AEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90B7D0A3-8265-4B4E-BEEE-AE2702DF2AEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90B7D0A3-8265-4B4E-BEEE-AE2702DF2AEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
