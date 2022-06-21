@@ -8,6 +8,8 @@ public sealed class Character : IDisposable
     internal readonly Action<Character>? Stop;
     internal readonly Action<Character, float>? Update;
 
+    public string Name;
+    public string? Tag;
     public Vector2 Position;
     public float Rotation;
     public Vector2 Scale = Vector2.One;
@@ -28,6 +30,8 @@ public sealed class Character : IDisposable
 
     public Character
     (
+        string name,
+        string? tag = null,
         Action<Character>? start = null, 
         Action<Character>? stop = null, 
         Action<Character, float>? update = null, 
@@ -36,6 +40,8 @@ public sealed class Character : IDisposable
         float? rotation = null, 
         Vector2? scale = null)
     {
+        Name = name;
+        Tag = tag;
         Start = start;
         Stop = stop;
         Update = update;
