@@ -2,6 +2,7 @@
 
 public sealed class World : IDisposable
 {
+    readonly List<Character> _starting = new();
     readonly List<Character> _characters = new();
 
     public World(Window window) => window.OnUpdate += Update;

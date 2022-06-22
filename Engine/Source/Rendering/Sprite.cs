@@ -1,13 +1,11 @@
-using Silk.NET.OpenGL;
-
 namespace Engine;
 
 public sealed class Sprite : IDisposable
 {
     internal bool IsInitialized { get; private set; }
-    internal Vector2 Size => Texture.Size;
-    internal Shader Shader { get; private set; } = null!;
-    internal Texture Texture { get; private set; } = null!;
+    internal Vector2 Size => Texture?.Size ?? Vector2.One;
+    internal Shader? Shader { get; private set; }
+    internal Texture? Texture { get; private set; }
     readonly string _path;
     
     readonly string _vertex = @"
@@ -46,7 +44,7 @@ void main()
     
     public void Dispose()
     {
-        Shader.Dispose();
-        Texture.Dispose();
+        Shader?.Dispose();
+        Texture?.Dispose();
     }
 }

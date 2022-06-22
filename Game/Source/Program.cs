@@ -13,9 +13,21 @@ window.OnStop += () =>
 new Character
 (
     name: "Player", 
-    scale: Vector2.One / 5000, 
+    scale: Vector2.One / 5,
     sprite: Sprites.PolyMars, 
-    update: (me, dt) => Commands.PlayerMovement(input, me, dt, 0.5f)
+    update: (me, dt) =>
+    {
+        var axis = input.Axis().Normalized();
+        if (me.Bounds.IsAbove(window.Bounds) && axis.Y > 0)
+            axis.Y = 0;
+        else if (me.Bounds.IsBelow(window.Bounds) && axis.Y < 0)
+            axis.Y = 0;
+        if (me.Bounds.IsRightOf(window.Bounds) && axis.X > 0)
+            axis.X = 0;
+        else if (me.Bounds.IsLeftOf(window.Bounds) && axis.X < 0)
+            axis.X = 0;
+        me.Position += axis * dt * 450;
+    }
 ).AddTo(world).AddTo(renderer);
 
 window.Run();

@@ -6,6 +6,8 @@ namespace Engine;
 
 public sealed class Window : IDisposable
 {
+    public const int SIZE = 900;
+    
     public event Action? OnStart;
     public event Action? OnStop;
     public event Action<float>? OnUpdate;
@@ -23,8 +25,8 @@ public sealed class Window : IDisposable
     {
         var options = WindowOptions.Default;
         {
-            options.Size = new(800);
-            Bounds = new(Vector2.Zero, new(options.Size.X, options.Size.Y));
+            options.Size = new(SIZE);
+            Bounds = new(Vector2.Zero, new(SIZE));
             options.Title = title;
             options.WindowBorder = WindowBorder.Fixed;
         }

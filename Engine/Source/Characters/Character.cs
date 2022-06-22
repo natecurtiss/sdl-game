@@ -12,7 +12,7 @@ public sealed class Character : IDisposable
     public string? Tag { get; set; }
     public Vector2 Position { get; set; }
     public float Rotation { get; set; }
-    public Vector2 Scale { get; set; } = Vector2.One;
+    public Vector2 Scale { get; set; }
     public int SortingOrder { get; set; }
     public Sprite? Sprite { get; set; }
 
@@ -21,10 +21,10 @@ public sealed class Character : IDisposable
     {
         get
         {
-            var size = new Vector2(Sprite is null ? 1 : Sprite.Size.X, Sprite is null ? 1 : Sprite.Size.Y);
+            var size = new Vector2(Sprite is null ? 1 : Sprite.Size.X, Sprite is null ? 1 : Sprite.Size.Y) / (Window.SIZE / 2f);
             var scale = CreateScale(Scale.X * size.X, Scale.Y * size.Y, 1);
             var rot = CreateRotationZ(MathF.PI / 180 * Rotation);
-            var pos = CreateTranslation(Position.X, Position.Y, 0);
+            var pos = CreateTranslation(Position.X / (Window.SIZE / 2f), Position.Y / (Window.SIZE / 2f), 0);
             return scale * rot * pos;
         }
     }

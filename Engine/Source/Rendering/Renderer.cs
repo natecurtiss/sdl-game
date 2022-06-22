@@ -24,7 +24,7 @@ public sealed class Renderer : IDisposable
     BufferObject<uint> _ebo = null!;
     VertexArrayObject<float, uint> _vao = null!;
     
-    public Color Background;
+    public Color Background { get; set; }
 
     public Renderer(Window window, Color bg = default)
     {
@@ -55,10 +55,10 @@ public sealed class Renderer : IDisposable
             var sprite = target.Sprite;
             if (!sprite.IsInitialized)
                 sprite.Init();
-            sprite.Shader.Use();
-            sprite.Texture.Bind();
-            sprite.Shader.SetUniform("uTexture0", 0);
-            sprite.Shader.SetUniform("uModel", target.Model);
+            sprite.Shader?.Use();
+            sprite.Texture?.Bind();
+            sprite.Shader?.SetUniform("uTexture0", 0);
+            sprite.Shader?.SetUniform("uModel", target.Model);
             Window.Graphics.DrawElements(PrimitiveType.Triangles, (uint) _indices.Length, DrawElementsType.UnsignedInt, null);
         }
     }
