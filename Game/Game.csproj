@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Engine\Engine.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
+    </ItemGroup>
+
 </Project>

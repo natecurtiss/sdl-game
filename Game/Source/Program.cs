@@ -2,6 +2,7 @@
 var renderer = new Renderer(window);
 var input = new Input(window);
 var world = new World(window);
+var tweener = new Tweener();
 
 window.OnStop += () =>
 {
@@ -9,6 +10,8 @@ window.OnStop += () =>
     renderer.Dispose();
     world.Dispose();
 };
+
+window.OnUpdate += dt => tweener.Update(dt);
 
 new Character
 (
@@ -27,7 +30,8 @@ new Character
             axis.X = 0;
         else if (me.Bounds.IsLeftOf(window.Bounds) && axis.X < 0)
             axis.X = 0;
-        me.Position += axis * dt * 450;
+        var move = axis * dt * 450;
+        me.Position += move;
         if (input.GetKeyDown(Key.Space))
             me.AudioSource.Play();
     }

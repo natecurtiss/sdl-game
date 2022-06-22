@@ -26,9 +26,9 @@ public sealed class Window : IDisposable
         var options = WindowOptions.Default;
         {
             options.Size = new(SIZE);
-            Bounds = new(Vector2.Zero, new(SIZE));
             options.Title = title;
             options.WindowBorder = WindowBorder.Fixed;
+            Bounds = new(Vector2.Zero, new(SIZE));
         }
         _native = Silk.NET.Windowing.Window.Create(options);
         _native.Load += () =>
