@@ -6,7 +6,7 @@ public sealed class Input
 {
     readonly Dictionary<Key, KeyDown> _keys = new();
     readonly IEnumerable<Key> _all = Enum.GetValues<Key>();
-    
+
     public Input(Window window)
     {
         foreach (var key in _all)
@@ -79,22 +79,22 @@ public sealed class Input
         }
         return false;
     }
-    
-    internal void Press(Key key)
+
+    void Press(Key key)
     {
         if (key == Unknown) return;
         if (_keys[key] != KeyDown.Pressed && _keys[key] != KeyDown.Down) 
             _keys[key] = KeyDown.Pressed;
     }
-    
-    internal void Release(Key key)
+
+    void Release(Key key)
     {
         if (key == Unknown) return;
         if (_keys[key] != KeyDown.Released && _keys[key] != KeyDown.Up) 
             _keys[key] = KeyDown.Released;
     }
     
-    void Update(float _)
+    void Update(float dt)
     {
         foreach (var (key, state) in _keys)
         {

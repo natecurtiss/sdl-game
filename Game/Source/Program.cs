@@ -16,7 +16,7 @@ window.OnUpdate += dt => tweener.Update(dt);
 new Character
 (
     name: "Player",
-    scale: Vector2.One / 5,
+    scale: Vector2.One / 10,
     spriteFile: "Assets/T_PolyMars.jpg".Find(),
     audioFile: "Assets/S_PolyMars.mp3".Find(),
     update: (me, dt) =>
@@ -30,7 +30,7 @@ new Character
             axis.X = 0;
         else if (me.Bounds.IsLeftOf(window.Bounds) && axis.X < 0)
             axis.X = 0;
-        var move = axis * dt * 450;
+        var move = axis * dt * 300;
         me.Position += move;
         if (input.GetKeyDown(Key.Space))
             me.AudioSource.Play();
