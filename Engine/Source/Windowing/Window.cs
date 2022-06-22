@@ -6,7 +6,7 @@ namespace Engine;
 
 public sealed class Window : IDisposable
 {
-    public const int SIZE = 900;
+    public static readonly Vector2 Size = new(800, 600);
     
     public event Action? OnStart;
     public event Action? OnStop;
@@ -25,10 +25,10 @@ public sealed class Window : IDisposable
     {
         var options = WindowOptions.Default;
         {
-            options.Size = new(SIZE);
+            options.Size = new((int) Size.X, (int) Size.Y);
             options.Title = title;
             options.WindowBorder = WindowBorder.Fixed;
-            Bounds = new(Vector2.Zero, new(SIZE));
+            Bounds = new(Vector2.Zero, Size);
         }
         _native = Silk.NET.Windowing.Window.Create(options);
         _native.Load += () =>

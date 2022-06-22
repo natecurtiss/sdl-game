@@ -22,10 +22,10 @@ public sealed class Character : IDisposable
     {
         get
         {
-            var size = new Vector2(Sprite is null ? 1 : Sprite.Size.X, Sprite is null ? 1 : Sprite.Size.Y) / (Window.SIZE / 2f);
+            var size = new Vector2(Sprite is null ? 1 : Sprite.Size.X, Sprite is null ? 1 : Sprite.Size.Y) / (Window.Size / 2f);
             var scale = CreateScale(Scale.X * size.X, Scale.Y * size.Y, 1);
             var rot = CreateRotationZ(MathF.PI / 180 * Rotation);
-            var pos = CreateTranslation(Position.X / (Window.SIZE / 2f), Position.Y / (Window.SIZE / 2f), 0);
+            var pos = CreateTranslation(Position.X / (Window.Size.X / 2f), Position.Y / (Window.Size.Y / 2f), 0);
             return scale * rot * pos;
         }
     }
