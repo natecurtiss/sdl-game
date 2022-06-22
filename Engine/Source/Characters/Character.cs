@@ -15,6 +15,7 @@ public sealed class Character : IDisposable
     public Vector2 Scale { get; set; }
     public int SortingOrder { get; set; }
     public Sprite? Sprite { get; set; }
+    public AudioSource AudioSource { get; } = new();
 
     public Bounds Bounds => new(Position, Scale * (Sprite?.Size ?? Vector2.One));
     public Matrix4x4 Model
@@ -36,7 +37,8 @@ public sealed class Character : IDisposable
         Action<Character>? start = null, 
         Action<Character>? stop = null, 
         Action<Character, float>? update = null, 
-        Sprite? sprite = null, 
+        string? spriteFile = null,
+        string? audioFile = null,
         Vector2? position = null, 
         float? rotation = null, 
         Vector2? scale = null)
@@ -46,7 +48,8 @@ public sealed class Character : IDisposable
         Start = start;
         Stop = stop;
         Update = update;
-        Sprite = sprite;
+        Sprite = spriteFile is null ? null : new(spriteFile);
+        AudioSource.File = audioFile;
         Position = position ?? Vector2.Zero;
         Rotation = rotation ?? 0f;
         Scale = scale ?? Vector2.One;
@@ -67,5 +70,9 @@ public sealed class Character : IDisposable
     public void RemoveFrom(World world) => world.Remove(this);
     public void RemoveFrom(Renderer renderer) => renderer.Remove(this);
     
-    public void Dispose() => Sprite?.Dispose();
+    public void Dispose()
+    {
+        Sprite?.Dispose();
+        AudioSource.Dispose();
+    }
 }

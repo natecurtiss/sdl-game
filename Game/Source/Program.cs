@@ -12,9 +12,10 @@ window.OnStop += () =>
 
 new Character
 (
-    name: "Player", 
+    name: "Player",
     scale: Vector2.One / 5,
-    sprite: Sprites.PolyMars, 
+    spriteFile: "Assets/T_PolyMars.jpg".Find(),
+    audioFile: "Assets/S_PolyMars.mp3".Find(),
     update: (me, dt) =>
     {
         var axis = input.Axis().Normalized();
@@ -27,6 +28,8 @@ new Character
         else if (me.Bounds.IsLeftOf(window.Bounds) && axis.X < 0)
             axis.X = 0;
         me.Position += axis * dt * 450;
+        if (input.GetKeyDown(Key.Space))
+            me.AudioSource.Play();
     }
 ).AddTo(world).AddTo(renderer);
 
