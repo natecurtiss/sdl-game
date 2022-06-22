@@ -8,14 +8,15 @@ public sealed class Character : IDisposable
     internal readonly Action<Character>? Stop;
     internal readonly Action<Character, float>? Update;
 
-    public string Name;
-    public string? Tag;
-    public Vector2 Position;
-    public float Rotation;
-    public Vector2 Scale = Vector2.One;
-    public int SortingOrder;
-    public Sprite? Sprite;
+    public string Name { get; set; }
+    public string? Tag { get; set; }
+    public Vector2 Position { get; set; }
+    public float Rotation { get; set; }
+    public Vector2 Scale { get; set; } = Vector2.One;
+    public int SortingOrder { get; set; }
+    public Sprite? Sprite { get; set; }
 
+    public Bounds Bounds => new(Position, Scale * (Sprite?.Size ?? Vector2.One));
     public Matrix4x4 Model
     {
         get

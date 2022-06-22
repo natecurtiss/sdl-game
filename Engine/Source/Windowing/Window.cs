@@ -13,7 +13,8 @@ public sealed class Window : IDisposable
     internal event Action? OnRender;
     internal event Action<Key>? OnKeyPress;
     internal event Action<Key>? OnKeyRelease;
-    
+
+    public readonly Bounds Bounds;
     readonly IWindow _native;
 
     internal static GL Graphics { get; private set; } = null!;
@@ -23,6 +24,7 @@ public sealed class Window : IDisposable
         var options = WindowOptions.Default;
         {
             options.Size = new(800);
+            Bounds = new(Vector2.Zero, new(options.Size.X, options.Size.Y));
             options.Title = title;
             options.WindowBorder = WindowBorder.Fixed;
         }
