@@ -4,7 +4,7 @@ using static System.IO.Path;
 
 namespace Engine;
 
-public static class Paths
+public static class PathExt
 {
     public static string Find(this string path, [CallerFilePath] string caller = "", int iterations = 8)
     {

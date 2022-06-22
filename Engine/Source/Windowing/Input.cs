@@ -17,6 +17,21 @@ public sealed class Input
         window.OnLateUpdate += Update;
     }
 
+    public Vector2 Axis()
+    {
+        var x = 0f;
+        var y = 0f;
+        if (GetKey(D) || GetKey(RightArrow))
+            x = 1f;
+        else if (GetKey(A) || GetKey(LeftArrow))
+            x = -1f;
+        if (GetKey(W) || GetKey(UpArrow))
+            y = 1f;
+        else if (GetKey(S) || GetKey(DownArrow))
+            y = -1f;
+        return new(x, y);
+    }
+    
     public bool GetKey(Key key)
     {
         if (key == Unknown) return false;
