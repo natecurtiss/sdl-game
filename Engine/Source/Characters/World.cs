@@ -18,7 +18,7 @@ public sealed class World : IDisposable
         character.Stop?.Invoke(character);
     }
     
-    void Update(float dt) => _characters.ForEach(c => c.Update?.Invoke(c, dt));
+    void Update(float dt) => _characters.ToList().ForEach(c => c.Update?.Invoke(c, dt));
     
     public void Dispose() => _characters.ToList().ForEach(c => c.Dispose());
 }

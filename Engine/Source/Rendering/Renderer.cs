@@ -64,8 +64,8 @@ public sealed class Renderer : IDisposable
         }
     }
 
-    public void Add(Character character) => _targets.Add(character);
-    public void Remove(Character character) => _targets.Remove(character);
+    internal void Add(Character character) => _targets.Add(character);
+    internal void Remove(Character character) => _targets.Remove(character);
 
     public void Dispose()
     {
