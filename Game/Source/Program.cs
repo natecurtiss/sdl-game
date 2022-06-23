@@ -2,6 +2,7 @@
 var renderer = new Renderer(window);
 var input = new Input(window);
 var world = new World(window);
+var tweener = new Tweener();
 
 window.OnStop += () =>
 {
@@ -9,6 +10,7 @@ window.OnStop += () =>
     renderer.Dispose();
     world.Dispose();
 };
+window.OnUpdate += tweener.Update;
 renderer.Background = Color.FromArgb(0, 211, 160, 104);
 
 const float scale_factor = 3;
@@ -21,26 +23,25 @@ var money = new Sprite("Assets/T_Money.png".Find());
 var coal = new Sprite("Assets/T_Coal.png".Find());
 var banana = new Sprite("Assets/T_Banana.png".Find());
 
-var isItem = false;
+var isItem = true;
 var isSwinging = false;
 var onSwing = () => { };
 new Character
 (
-    name: "Shovel", 
+    name: "Shovel",
     scale: Vector2.One / scale_factor,
-    sortingOrder: 1, 
+    sortingOrder: 1,
+    rotation: -90f,
     spriteFile: "Assets/T_Shovel.png".Find(),
     update: (me, dt) =>
     {
-        if (!isSwinging && !isItem && input.Axis().X != 0 || input.Axis().Y != 0)
+        if (!isSwinging && isItem && input.Axis().X != 0 || input.Axis().Y != 0)
         {
             isSwinging = true;
+            tweener.Tween(me, new {X = 20, Y = 20f}, 0.5f).Ease(Ease.BackInOut);
+            tweener.Timer(0.5f).OnComplete(() => tweener.Tween(me, new {X = 0, Y = 0f}, 0.5f).Ease(Ease.BackInOut));
+            tweener.Timer(1f).OnComplete(() => isSwinging = false);
             onSwing();
-        }
-        else
-        {
-            me.Position += Vector2.One * 20f * dt;
-            me.Rotation += 90 * dt;
         }
     }
 ).AddTo(world).AddTo(renderer);

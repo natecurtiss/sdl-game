@@ -19,7 +19,7 @@ public sealed class Renderer : IDisposable
         0, 1, 3,
         1, 2, 3
     };
-    
+
     BufferObject<float> _vbo = null!;
     BufferObject<uint> _ebo = null!;
     VertexArrayObject<float, uint> _vao = null!;
@@ -59,6 +59,7 @@ public sealed class Renderer : IDisposable
             sprite.Texture?.Bind();
             sprite.Shader?.SetUniform("uTexture0", 0);
             sprite.Shader?.SetUniform("uModel", target.Model);
+            sprite.Shader?.SetUniform("uProjection", Matrix4x4.CreateOrthographic(Window.Size.X, Window.Size.Y, 0.01f, 100f));
             Window.Graphics.DrawElements(PrimitiveType.Triangles, (uint) _indices.Length, DrawElementsType.UnsignedInt, null);
         }
     }

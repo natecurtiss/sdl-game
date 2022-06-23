@@ -12,19 +12,26 @@ public sealed class Sprite : IDisposable
 #version 330 core
 layout (location = 0) in vec3 vPos;
 layout (location = 1) in vec2 vUv;
+
 uniform mat4 uModel;
+uniform mat4 uProjection;
+
 out vec2 fUv;
+
 void main()
 {
-    gl_Position = uModel * vec4(vPos, 1.0);
+    gl_Position = uProjection * uModel * vec4(vPos, 1.0);
     fUv = vUv;
 }";
     
     readonly string _fragment = @"
 #version 330 core
 in vec2 fUv;
+
 uniform sampler2D uTexture0;
+
 out vec4 FragColor;
+
 void main()
 {
     if (texture(uTexture0, fUv).a != 1.0f)
