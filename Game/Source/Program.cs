@@ -35,7 +35,7 @@ new Character
     spriteFile: "Assets/T_Shovel.png".Find(),
     update: (me, _) =>
     {
-        if (!isSwinging && isItem && input.Axis().X != 0 || input.Axis().Y != 0)
+        if (!isSwinging && isItem && (input.Axis().X != 0 || input.Axis().Y != 0))
         {
             isSwinging = true;
             var ease = Ease.QuadInOut;
