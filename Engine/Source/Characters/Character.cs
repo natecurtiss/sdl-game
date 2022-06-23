@@ -17,6 +17,18 @@ public sealed class Character : IDisposable
     public Sprite? Sprite { get; set; }
     public AudioSource AudioSource { get; } = new();
 
+    public float X
+    {
+        get => Position.X;
+        set => Position = Position with {X = value};
+    }
+    
+    public float Y
+    {
+        get => Position.Y;
+        set => Position = Position with {Y = value};
+    }
+
     public Bounds Bounds => new(Position, Scale * (Sprite?.Size ?? Vector2.One));
     public Matrix4x4 Model
     {
@@ -39,8 +51,9 @@ public sealed class Character : IDisposable
         Action<Character, float>? update = null, 
         string? spriteFile = null,
         string? audioFile = null,
+        int sortingOrder = 0,
         Vector2? position = null, 
-        float? rotation = null, 
+        float rotation = 0, 
         Vector2? scale = null)
     {
         Name = name;
@@ -50,8 +63,9 @@ public sealed class Character : IDisposable
         Update = update;
         Sprite = spriteFile is null ? null : new(spriteFile);
         AudioSource.File = audioFile;
+        SortingOrder = sortingOrder;
         Position = position ?? Vector2.Zero;
-        Rotation = rotation ?? 0f;
+        Rotation = rotation;
         Scale = scale ?? Vector2.One;
     }
 

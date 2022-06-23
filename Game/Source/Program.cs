@@ -2,7 +2,6 @@
 var renderer = new Renderer(window);
 var input = new Input(window);
 var world = new World(window);
-var tweener = new Tweener();
 
 window.OnStop += () =>
 {
@@ -10,30 +9,39 @@ window.OnStop += () =>
     renderer.Dispose();
     world.Dispose();
 };
+renderer.Background = Color.FromArgb(0, 211, 160, 104);
 
-window.OnUpdate += dt => tweener.Update(dt);
+const float scale_factor = 3;
+var player = new Character(name: "Player", scale: Vector2.One / scale_factor, position: new(-45, 0), spriteFile: "Assets/T_Player.png".Find()).AddTo(world).AddTo(renderer);
+var pile = new Character(name: "Pile", scale: Vector2.One / scale_factor, position: new(30, -21), spriteFile: "Assets/T_PileOfCoal.png".Find()).AddTo(world).AddTo(renderer);
+var trash = new Character(name: "Trash", scale: Vector2.One / scale_factor, position: new(-300, -3), sortingOrder: 3, spriteFile: "Assets/T_Trash.png".Find()).AddTo(world).AddTo(renderer);
+var furnace = new Character(name: "Furnace", scale: Vector2.One / scale_factor, position: new(330, -3), sortingOrder: 3, spriteFile: "Assets/T_Furnace.png".Find()).AddTo(world).AddTo(renderer);
+var item = new Character(name: "Item", scale: Vector2.One / scale_factor, position: pile.Position + new Vector2(0, 40), sortingOrder: 2).AddTo(world).AddTo(renderer);
+var money = new Sprite("Assets/T_Money.png".Find());
+var coal = new Sprite("Assets/T_Coal.png".Find());
+var banana = new Sprite("Assets/T_Banana.png".Find());
 
+var isItem = false;
+var isSwinging = false;
+var onSwing = () => { };
 new Character
 (
-    name: "Player",
-    scale: Vector2.One / 10,
-    spriteFile: "Assets/T_PolyMars.jpg".Find(),
-    audioFile: "Assets/S_PolyMars.mp3".Find(),
+    name: "Shovel", 
+    scale: Vector2.One / scale_factor,
+    sortingOrder: 1, 
+    spriteFile: "Assets/T_Shovel.png".Find(),
     update: (me, dt) =>
     {
-        var axis = input.Axis().Normalized();
-        if (me.Bounds.IsAbove(window.Bounds) && axis.Y > 0)
-            axis.Y = 0;
-        else if (me.Bounds.IsBelow(window.Bounds) && axis.Y < 0)
-            axis.Y = 0;
-        if (me.Bounds.IsRightOf(window.Bounds) && axis.X > 0)
-            axis.X = 0;
-        else if (me.Bounds.IsLeftOf(window.Bounds) && axis.X < 0)
-            axis.X = 0;
-        var move = axis * dt * 300;
-        me.Position += move;
-        if (input.GetKeyDown(Key.Space))
-            me.AudioSource.Play();
+        if (!isSwinging && !isItem && input.Axis().X != 0 || input.Axis().Y != 0)
+        {
+            isSwinging = true;
+            onSwing();
+        }
+        else
+        {
+            me.Position += Vector2.One * 20f * dt;
+            me.Rotation += 90 * dt;
+        }
     }
 ).AddTo(world).AddTo(renderer);
 

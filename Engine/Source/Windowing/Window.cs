@@ -24,12 +24,12 @@ public sealed class Window : IDisposable
     public Window(string title)
     {
         var options = WindowOptions.Default;
-        {
-            options.Size = new((int) Size.X, (int) Size.Y);
-            options.Title = title;
-            options.WindowBorder = WindowBorder.Fixed;
-            Bounds = new(Vector2.Zero, Size);
-        }
+        options.Size = new((int) Size.X, (int) Size.Y);
+        options.Title = title;
+        options.WindowBorder = WindowBorder.Fixed;
+        options.UpdatesPerSecond = 60.0;
+        options.FramesPerSecond = 60.0;
+        Bounds = new(Vector2.Zero, Size);
         _native = Silk.NET.Windowing.Window.Create(options);
         _native.Load += () =>
         {

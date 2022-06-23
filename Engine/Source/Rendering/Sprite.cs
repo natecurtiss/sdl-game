@@ -40,6 +40,7 @@ void main()
     {
         Shader = new(_vertex, _fragment);
         Texture = new(_path);
+        IsInitialized = true;
     }
     
     public void Dispose()
