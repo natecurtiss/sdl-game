@@ -31,16 +31,23 @@ new Character
     name: "Shovel",
     scale: Vector2.One / scale_factor,
     sortingOrder: 1,
-    rotation: -90f,
+    rotation: -75f,
     spriteFile: "Assets/T_Shovel.png".Find(),
-    update: (me, dt) =>
+    update: (me, _) =>
     {
         if (!isSwinging && isItem && input.Axis().X != 0 || input.Axis().Y != 0)
         {
             isSwinging = true;
-            tweener.Tween(me, new {X = 20, Y = 20f}, 0.5f).Ease(Ease.BackInOut);
-            tweener.Timer(0.5f).OnComplete(() => tweener.Tween(me, new {X = 0, Y = 0f}, 0.5f).Ease(Ease.BackInOut));
-            tweener.Timer(1f).OnComplete(() => isSwinging = false);
+            var ease = Ease.QuadInOut;
+            tweener.Tween(me, new {X = 30, Y = 30}, 0.4f).Ease(ease);
+            tweener.Tween(me, new {Rotation = -110f}, 0.1f).Ease(ease);
+            tweener.Timer(0.1f).OnComplete(() => tweener.Tween(me, new {Rotation = -45f}, 0.3f).Ease(ease));
+            tweener.Timer(0.4f).OnComplete(() =>
+            {
+                tweener.Tween(me, new {Rotation = -75f}, 0.3f).Ease(ease);
+                tweener.Tween(me, new {X = 0, Y = 0f}, 0.3f).Ease(ease);
+            });
+            tweener.Timer(0.7f).OnComplete(() => isSwinging = false);
             onSwing();
         }
     }
