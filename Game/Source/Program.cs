@@ -14,11 +14,12 @@ window.OnUpdate += tweener.Update;
 renderer.Background = Color.FromArgb(0, 211, 160, 104);
 
 const float scale_factor = 3;
-var player = new Character(name: "Player", scale: Vector2.One / scale_factor, position: new(-45, 0), spriteFile: "Assets/T_Player.png".Find()).AddTo(world).AddTo(renderer);
-var pile = new Character(name: "Pile", scale: Vector2.One / scale_factor, position: new(30, -21), spriteFile: "Assets/T_PileOfCoal.png".Find()).AddTo(world).AddTo(renderer);
-var trash = new Character(name: "Trash", scale: Vector2.One / scale_factor, position: new(-300, -3), sortingOrder: 3, spriteFile: "Assets/T_Trash.png".Find()).AddTo(world).AddTo(renderer);
-var furnace = new Character(name: "Furnace", scale: Vector2.One / scale_factor, position: new(330, -3), sortingOrder: 3, spriteFile: "Assets/T_Furnace.png".Find()).AddTo(world).AddTo(renderer);
+var player = new Character(name: "Player", scale: Vector2.One / scale_factor, position: new(-45, 0), sortingOrder: 3, spriteFile: "Assets/T_Player.png".Find()).AddTo(world).AddTo(renderer);
+var pile = new Character(name: "Pile", scale: Vector2.One / scale_factor, position: new(40, -21), spriteFile: "Assets/T_PileOfCoal.png".Find()).AddTo(world).AddTo(renderer);
+var trash = new Character(name: "Trash", scale: Vector2.One / scale_factor, position: new(-300, -3), sortingOrder: 5, spriteFile: "Assets/T_Trash.png".Find()).AddTo(world).AddTo(renderer);
+var furnace = new Character(name: "Furnace", scale: Vector2.One / scale_factor, position: new(330, -3), sortingOrder: 5, spriteFile: "Assets/T_Furnace.png".Find()).AddTo(world).AddTo(renderer);
 
+Character spawned = null!;
 var currentItem = Mappings.Random();
 var isSorting = false;
 new Character
@@ -28,6 +29,7 @@ new Character
     sortingOrder: 1,
     rotation: -75f,
     spriteFile: "Assets/T_Shovel.png".Find(),
+    start: _ => Spawn(),
     update: (me, _) =>
     {
         if (isSorting)
@@ -39,26 +41,42 @@ new Character
             dir = Left;
         else if (input.GetKeyDown(Key.S) || input.GetKeyDown(Key.DownArrow))
             dir = Down;
+        else if (input.GetKey(Key.D) || input.GetKey(Key.RightArrow))
+            dir = Right;
+        else if (input.GetKey(Key.LeftArrow) || input.GetKey(Key.A))
+            dir = Left;
+        else if (input.GetKey(Key.S) || input.GetKey(Key.DownArrow))
+            dir = Down;
         if (dir == None)
             return;
         var ease = Ease.QuadInOut;
         isSorting = true;
-        tweener.Tween(me, new {X = 30, Y = 30}, 0.4f).Ease(ease);
+        tweener.Tween(me, new {X = 30, Y = 30}, 0.2f).Ease(ease);
         tweener.Tween(me, new {Rotation = -110f}, 0.1f).Ease(ease);
-        tweener.Timer(0.1f).OnComplete(() => tweener.Tween(me, new {Rotation = -45f}, 0.3f).Ease(ease));
-        tweener.Timer(0.4f).OnComplete(() =>
+        tweener.Timer(0.1f).OnComplete(() => tweener.Tween(me, new {Rotation = -45f}, 0.1f).Ease(ease));
+        tweener.Timer(0.2f).OnComplete(() =>
         {
-            tweener.Tween(me, new {Rotation = -75f}, 0.3f).Ease(ease);
-            tweener.Tween(me, new {X = 0, Y = 0f}, 0.3f).Ease(ease);
+            tweener.Tween(me, new {Rotation = -75f}, 0.1f).Ease(ease);
+            tweener.Tween(me, new {X = 0, Y = 0f}, 0.1f).Ease(ease);
         });
-        tweener.Timer(0.7f).OnComplete(() => isSorting = false);
+        tweener.Timer(0.3f).OnComplete(() => isSorting = false);
         Sort(dir);
     }
 ).AddTo(world).AddTo(renderer);
 
+void Spawn()
+{
+    currentItem = Mappings.Random();
+    spawned = new Character("Spawned", scale: Vector2.One / scale_factor, position: pile.Position, sortingOrder: 0).AddTo(world).AddTo(renderer);
+    spawned.Sprite = Mappings.Sprite(currentItem);
+    tweener.Tween(spawned, new {Y = pile.Position.Y + 20}, 0.5f).Ease(Ease.QuadInOut);
+}
+
 void Sort(Direction dir)
 {
-    var item = new Character("Item Sorting", start: me =>
+    spawned.RemoveFrom(renderer);
+    spawned.RemoveFrom(world);
+    var sorted = new Character("Sorted", start: me =>
     {
         var target = dir switch
         {
@@ -72,7 +90,7 @@ void Sort(Direction dir)
             Right => 0.6f,
             Down => 0.5f,
         };
-        tweener.Tween(me, new {X = target.X}, duration)
+        tweener.Tween(me, new {target.X}, duration)
             .Ease(Ease.QuadInOut)
             .OnComplete(() =>
             {
@@ -80,10 +98,11 @@ void Sort(Direction dir)
                 me.RemoveFrom(world);
             });
         tweener.Tween(me, new {Y = target.Y + 50}, duration / 2f).Ease(Ease.SineInOut);
-        tweener.Timer(0.25f).OnComplete(() => tweener.Tween(me, new {Y = target.Y}, duration / 2f).Ease(Ease.SineInOut));
-    }, scale: Vector2.One / scale_factor, position: pile.Position + new Vector2(0, 20), sortingOrder: 2).AddTo(world).AddTo(renderer);
-    item.Sprite = Mappings.Sprite(currentItem);
-    currentItem = Mappings.Random();
+        tweener.Timer(0.25f).OnComplete(() => tweener.Tween(me, new {target.Y}, duration / 2f).Ease(Ease.SineInOut));
+    }, scale: Vector2.One / scale_factor, position: pile.Position + new Vector2(0, 20)).AddTo(world).AddTo(renderer);
+    sorted.Sprite = Mappings.Sprite(currentItem);
+    sorted.SortingOrder = dir == Down ? 2 : 4;
+    Spawn();
 }
 
 
