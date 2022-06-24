@@ -22,6 +22,8 @@ var furnace = new Character(name: "Furnace", scale: Vector2.One / scale_factor, 
 Character spawned = null!;
 var currentItem = Mappings.Random();
 var isSorting = false;
+var hasLost = false;
+
 new Character
 (
     name: "Shovel",
@@ -32,7 +34,7 @@ new Character
     start: _ => Spawn(),
     update: (me, _) =>
     {
-        if (isSorting)
+        if (isSorting || hasLost)
             return;
         var dir = None;
         if (input.GetKeyDown(Key.D) || input.GetKeyDown(Key.RightArrow))
@@ -76,6 +78,7 @@ void Sort(Direction dir)
 {
     spawned.RemoveFrom(renderer);
     spawned.RemoveFrom(world);
+    var item = currentItem;
     var sorted = new Character("Sorted", start: me =>
     {
         var target = dir switch
@@ -94,13 +97,25 @@ void Sort(Direction dir)
             .Ease(Ease.QuadInOut)
             .OnComplete(() =>
             {
+                if (!hasLost)
+                {
+                    if (Mappings.IsValid(item, dir))
+                    {
+                        Console.WriteLine("+1!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Lose!");
+                        hasLost = true;
+                    }
+                }
                 me.RemoveFrom(renderer);
                 me.RemoveFrom(world);
             });
         tweener.Tween(me, new {Y = target.Y + 50}, duration / 2f).Ease(Ease.SineInOut);
         tweener.Timer(0.25f).OnComplete(() => tweener.Tween(me, new {target.Y}, duration / 2f).Ease(Ease.SineInOut));
     }, scale: Vector2.One / scale_factor, position: pile.Position + new Vector2(0, 20)).AddTo(world).AddTo(renderer);
-    sorted.Sprite = Mappings.Sprite(currentItem);
+    sorted.Sprite = Mappings.Sprite(item);
     sorted.SortingOrder = dir == Down ? 2 : 4;
     Spawn();
 }
