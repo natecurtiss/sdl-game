@@ -13,6 +13,9 @@ window.OnStop += () =>
 window.OnUpdate += tweener.Update;
 renderer.Background = Color.FromArgb(0, 211, 160, 104);
 
+var startMenu = new Character("Start Menu", sortingOrder: 100, spriteFile: "Assets/T_StartMenu.png".Find()).AddTo(renderer).AddTo(world);
+var loseMenu = new Character("Lose Menu", sortingOrder: 101, position: new(0, 600), spriteFile: "Assets/T_LoseMenu.png".Find()).AddTo(world);
+
 const float scale_factor = 2;
 var player = new Character(name: "Player", scale: Vector2.One / scale_factor, position: new(-90, 0), sortingOrder: 3, spriteFile: "Assets/T_Player.png".Find()).AddTo(world).AddTo(renderer);
 var pile = new Character(name: "Pile", scale: Vector2.One / scale_factor, position: new(45, -32), spriteFile: "Assets/T_PileOfCoal.png".Find()).AddTo(world).AddTo(renderer);
@@ -49,6 +52,12 @@ new Character
             if (input.GetKeyDown(Key.Space))
             {
                 hasStarted = true;
+                tweener.Tween(startMenu, new {Y = 600}, 0.25f).Ease(Ease.QuadInOut).OnComplete(() =>
+                {
+                    startMenu.RemoveFrom(renderer);
+                    startMenu.RemoveFrom(world);
+                });
+                Spawn();
             }
             return;
         }
@@ -57,6 +66,7 @@ new Character
         {
             if (input.GetKeyDown(Key.Space))
             {
+                tweener.Tween(loseMenu, new {Y = 600}, 0.25f).Ease(Ease.QuadInOut).OnComplete(() => loseMenu.RemoveFrom(renderer));
                 hasLost = false;
                 timeLeft = 4f;
                 timer = timeLeft;
@@ -171,6 +181,8 @@ void Score()
 
 void Lose()
 {
+    loseMenu.AddTo(renderer);
+    tweener.Tween(loseMenu, new {Y = 0}, 0.5f).Ease(Ease.QuadInOut);
     hasLost = true;
 }
 
