@@ -2,8 +2,8 @@ namespace Engine;
 
 public sealed class Sprite : IDisposable
 {
+    public Vector2 Size => Texture?.Size ?? Vector2.One;
     internal bool IsInitialized { get; private set; }
-    internal Vector2 Size => Texture?.Size ?? Vector2.One;
     internal Shader? Shader { get; private set; }
     internal Texture? Texture { get; private set; }
     readonly string _path;

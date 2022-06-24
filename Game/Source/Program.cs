@@ -18,12 +18,19 @@ var player = new Character(name: "Player", scale: Vector2.One / scale_factor, po
 var pile = new Character(name: "Pile", scale: Vector2.One / scale_factor, position: new(45, -32), spriteFile: "Assets/T_PileOfCoal.png".Find()).AddTo(world).AddTo(renderer);
 var trash = new Character(name: "Trash", scale: Vector2.One / scale_factor, position: new(-300, -3), sortingOrder: 5, spriteFile: "Assets/T_Trash.png".Find()).AddTo(world).AddTo(renderer);
 var furnace = new Character(name: "Furnace", scale: Vector2.One / scale_factor, position: new(340, -3), sortingOrder: 5, spriteFile: "Assets/T_Furnace.png".Find()).AddTo(world).AddTo(renderer);
+var barPos = new Vector2(-250, 250);
+var barFillPos = barPos +new Vector2(0.5f, -0f);
+var barScale = 0.75f;
+var barFillAmt = 1.02f * barScale;
+var barFG = new Character(name: "Bar_FG", scale: Vector2.One * barScale, position: barPos, sortingOrder: 99, spriteFile: "Assets/T_Bar_FG.png".Find()).AddTo(world).AddTo(renderer);
+var barFill = new Character(name: "Bar_Fill", scale: new Vector2(barFillAmt, barFillAmt), position: barFillPos, sortingOrder: 98, spriteFile: "Assets/T_Bar_Fill.png".Find()).AddTo(world).AddTo(renderer);
+var barBG = new Character(name: "Bar_BG", scale: new Vector2(barFillAmt, barFillAmt) * 0.98f, position: barPos, sortingOrder: 97, spriteFile: "Assets/T_Bar_BG.png".Find()).AddTo(world).AddTo(renderer);
 
 Character spawned = null!;
 var currentItem = Mappings.Random();
 var isSorting = false;
 var hasLost = false;
-var timeLeft = 3f;
+var timeLeft = 5f;
 var timer = timeLeft;
 
 new Character
@@ -40,8 +47,13 @@ new Character
         if (hasLost)
             return;
         timer -= dt;
+        barFill.Scale = new(timer / timeLeft * barFillAmt, barFillAmt);
+        barFill.Position = barFillPos - new Vector2(barFill.Sprite!.Size.X * barFillAmt / 2, 0) + timer / timeLeft * new Vector2(barFill.Sprite!.Size.X * barFillAmt / 2, 0);
         if (timer <= 0)
+        {
             Lose();
+            barFill.RemoveFrom(renderer);
+        }
         if (isSorting)
             return;
         var dir = None;
@@ -84,7 +96,7 @@ void Spawn()
 
 void Sort(Direction dir)
 {
-    timeLeft *= 0.9f;
+    timeLeft *= 0.99f;
     timer = timeLeft;
     spawned.RemoveFrom(renderer);
     spawned.RemoveFrom(world);
@@ -110,9 +122,13 @@ void Sort(Direction dir)
                 if (!hasLost)
                 {
                     if (Mappings.IsValid(item, dir))
+                    {
                         Score();
+                    }
                     else
+                    {
                         Lose();
+                    }
                 }
                 me.RemoveFrom(renderer);
                 me.RemoveFrom(world);
@@ -132,7 +148,6 @@ void Score()
 
 void Lose()
 {
-    Console.WriteLine("Lost!");
     hasLost = true;
 }
 

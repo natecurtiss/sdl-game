@@ -29,6 +29,12 @@ public sealed class Character : IDisposable
         set => Position = Position with {Y = value};
     }
 
+    public float XScale
+    {
+        get => Scale.X;
+        set => Scale = Scale with {X = value};
+    }
+
     public Bounds Bounds => new(Position, Scale * (Sprite?.Size ?? Vector2.One));
     public Matrix4x4 Model
     {
