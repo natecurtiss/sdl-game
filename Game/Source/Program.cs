@@ -30,6 +30,7 @@ Character spawned = null!;
 var currentItem = Mappings.Random();
 var isSorting = false;
 var hasLost = false;
+var hasStarted = false;
 var timeLeft = 4f;
 var timer = timeLeft;
 
@@ -41,11 +42,33 @@ new Character
     rotation: -75f,
     position: new(-30, 0),
     spriteFile: "Assets/T_Shovel.png".Find(),
-    start: _ => Spawn(),
     update: (me, dt) =>
     {
-        if (hasLost)
+        if (!hasStarted)
+        {
+            if (input.GetKeyDown(Key.Space))
+            {
+                hasStarted = true;
+            }
             return;
+        }
+
+        if (hasLost)
+        {
+            if (input.GetKeyDown(Key.Space))
+            {
+                hasLost = false;
+                timeLeft = 4f;
+                timer = timeLeft;
+                isSorting = false;
+                currentItem = Mappings.Random();
+                spawned.RemoveFrom(renderer);
+                spawned.RemoveFrom(world);
+                spawned = null!;
+                Spawn();
+            }
+            return;
+        }
         timer -= dt;
         barFill.Scale = new(timer / timeLeft * barFillAmt, barFillAmt);
         barFill.Position = barFillPos - new Vector2(barFill.Sprite!.Size.X * barFillAmt / 2, 0) + timer / timeLeft * new Vector2(barFill.Sprite!.Size.X * barFillAmt / 2, 0);
