@@ -7,6 +7,7 @@ public sealed class AudioSource : IDisposable
     readonly WaveOutEvent _out = new();
 
     public bool ShouldLoop { get; set; }
+    public bool IsPlaying { get; private set; }
     
     public string? File
     {
@@ -28,6 +29,7 @@ public sealed class AudioSource : IDisposable
         _out.PlaybackStopped += (_, _) =>
         {
             File = _file;
+            IsPlaying = false;
             if (ShouldLoop)
                 Play();
         };
@@ -35,8 +37,11 @@ public sealed class AudioSource : IDisposable
 
     public void Play()
     {
-        if (_file is not null) 
+        if (_file is not null)
+        {
             _out.Play();
+            IsPlaying = true;
+        }
     }
 
     public void Dispose() => _out.Dispose();

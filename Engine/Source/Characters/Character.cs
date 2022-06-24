@@ -15,7 +15,9 @@ public sealed class Character : IDisposable
     public Vector2 Scale { get; set; }
     public int SortingOrder { get; set; }
     public Sprite? Sprite { get; set; }
-    public AudioSource AudioSource { get; } = new();
+    public AudioSource AudioSource => _audio1.IsPlaying ? _audio2 : _audio1;
+    readonly AudioSource _audio1 = new();
+    readonly AudioSource _audio2 = new();
 
     public float X
     {
@@ -68,7 +70,8 @@ public sealed class Character : IDisposable
         Stop = stop;
         Update = update;
         Sprite = spriteFile is null ? null : new(spriteFile);
-        AudioSource.File = audioFile;
+        _audio1.File = audioFile;
+        _audio2.File = audioFile;
         SortingOrder = sortingOrder;
         Position = position ?? Vector2.Zero;
         Rotation = rotation;
