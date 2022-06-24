@@ -30,7 +30,7 @@ Character spawned = null!;
 var currentItem = Mappings.Random();
 var isSorting = false;
 var hasLost = false;
-var timeLeft = 5f;
+var timeLeft = 4f;
 var timer = timeLeft;
 
 new Character
