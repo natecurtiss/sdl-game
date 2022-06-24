@@ -6,7 +6,7 @@ namespace Engine;
 
 public sealed class Window : IDisposable
 {
-    public static readonly Vector2 Size = new(800, 600);
+    public static readonly Vector2 Size = new(800, 500);
     
     public event Action? OnStart;
     public event Action? OnStop;

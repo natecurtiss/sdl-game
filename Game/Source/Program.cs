@@ -26,11 +26,15 @@ var timeOutSound = new Character(name: "Time Out Sound", audioFile: "Assets/S_Ti
 var trainSound = new Character(name: "Train Sound", audioFile: "Assets/S_Advance.mp3".Find()).AddTo(world);
 
 const float scale_factor = 2;
-var player = new Character(name: "Player", scale: Vector2.One / scale_factor, position: new(-90, 0), sortingOrder: 3, spriteFile: "Assets/T_Player.png".Find()).AddTo(world).AddTo(renderer);
-var pile = new Character(name: "Pile", scale: Vector2.One / scale_factor, position: new(45, -32), spriteFile: "Assets/T_PileOfCoal.png".Find()).AddTo(world).AddTo(renderer);
-var trash = new Character(name: "Trash", scale: Vector2.One / scale_factor, position: new(-300, -3), sortingOrder: 5, spriteFile: "Assets/T_Trash.png".Find()).AddTo(world).AddTo(renderer);
-var furnace = new Character(name: "Furnace", scale: Vector2.One / scale_factor, position: new(340, -3), sortingOrder: 5, spriteFile: "Assets/T_Furnace.png".Find()).AddTo(world).AddTo(renderer);
-var barPos = new Vector2(-250, 250);
+new Character(name: "Floor", scale: Vector2.One, position: new(0, -215), sortingOrder: -5, spriteFile: "Assets/T_Floor.png".Find()).AddTo(world).AddTo(renderer);
+new Character(name: "Windows", scale: Vector2.One *0.8f, position: new(0, 60), sortingOrder: -5, spriteFile: "Assets/T_Windows.png".Find()).AddTo(world).AddTo(renderer);
+new Character(name: "Windows", scale: Vector2.One *0.8f, position: new(250, 60), sortingOrder: -5, spriteFile: "Assets/T_Windows.png".Find()).AddTo(world).AddTo(renderer);
+new Character(name: "Windows", scale: Vector2.One *0.8f, position: new(-250, 60), sortingOrder: -5, spriteFile: "Assets/T_Windows.png".Find()).AddTo(world).AddTo(renderer);
+var player = new Character(name: "Player", scale: Vector2.One / scale_factor, position: new(-90, -30), sortingOrder: 3, spriteFile: "Assets/T_Player.png".Find()).AddTo(world).AddTo(renderer);
+var pile = new Character(name: "Pile", scale: Vector2.One / scale_factor, position: new(45, -62), spriteFile: "Assets/T_PileOfCoal.png".Find()).AddTo(world).AddTo(renderer);
+var trash = new Character(name: "Trash", scale: Vector2.One / scale_factor, position: new(-300, -33), sortingOrder: 5, spriteFile: "Assets/T_Trash.png".Find()).AddTo(world).AddTo(renderer);
+var furnace = new Character(name: "Furnace", scale: Vector2.One / scale_factor, position: new(340, -33), sortingOrder: 5, spriteFile: "Assets/T_Furnace.png".Find()).AddTo(world).AddTo(renderer);
+var barPos = new Vector2(-250, 200);
 var barFillPos = barPos +new Vector2(0.5f, -0f);
 var barScale = 0.75f;
 var barFillAmt = 1.02f * barScale;
@@ -52,7 +56,7 @@ new Character
     scale: Vector2.One / scale_factor,
     sortingOrder: 1,
     rotation: -75f,
-    position: new(-30, 0),
+    position: new(-30, -30),
     spriteFile: "Assets/T_Shovel.png".Find(),
     update: (me, dt) =>
     {
@@ -119,13 +123,13 @@ new Character
         shovelSound.AudioSource.Play();
         var ease = Ease.QuadInOut;
         isSorting = true;
-        tweener.Tween(me, new {X = 30, Y = 30}, 0.2f).Ease(ease);
+        tweener.Tween(me, new {X = 30, Y = 0}, 0.2f).Ease(ease);
         tweener.Tween(me, new {Rotation = -110f}, 0.1f).Ease(ease);
         tweener.Timer(0.1f).OnComplete(() => tweener.Tween(me, new {Rotation = -45f}, 0.1f).Ease(ease));
         tweener.Timer(0.2f).OnComplete(() =>
         {
             tweener.Tween(me, new {Rotation = -75f}, 0.1f).Ease(ease);
-            tweener.Tween(me, new {X = -30, Y = 0f}, 0.1f).Ease(ease);
+            tweener.Tween(me, new {X = -30, Y = -30f}, 0.1f).Ease(ease);
         });
         tweener.Timer(0.3f).OnComplete(() => isSorting = false);
         Sort(dir);
@@ -142,7 +146,7 @@ void Spawn()
 
 void Sort(Direction dir)
 {
-    timeLeft *= 0.99f;
+    timeLeft *= 0.95f;
     timer = timeLeft;
     spawned.RemoveFrom(renderer);
     spawned.RemoveFrom(world);
