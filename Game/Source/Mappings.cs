@@ -2,9 +2,9 @@ namespace Game;
 
 static class Mappings
 {
-    static readonly Sprite _money = new Sprite("Assets/T_Money.png".Find());
-    static readonly Sprite _coal = new Sprite("Assets/T_Coal.png".Find());
-    static readonly Sprite _banana = new Sprite("Assets/T_Banana.png".Find());
+    static readonly Sprite _money = new("Assets/T_Money.png".Find());
+    static readonly Sprite _coal = new("Assets/T_Coal.png".Find());
+    static readonly Sprite _banana = new("Assets/T_Banana.png".Find());
     static readonly Sprite[] _items = {_money, _coal, _banana};
     static readonly Random _random = new();
     
