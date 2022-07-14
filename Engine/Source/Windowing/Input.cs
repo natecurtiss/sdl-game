@@ -43,7 +43,15 @@ public sealed class Input
         }
         else
         {
-            return _keys[key] == KeyDown.Down || GetKeyDown(key);
+            try
+            {
+                return _keys[key] == KeyDown.Down || GetKeyDown(key);
+            }
+            catch (KeyNotFoundException)
+            {
+                return false;
+            }
+
         }
         return false;
     }
@@ -59,7 +67,14 @@ public sealed class Input
         }
         else
         {
-            return _keys[key] == KeyDown.Released;
+            try
+            {
+                return _keys[key] == KeyDown.Released;
+            }
+            catch (KeyNotFoundException)
+            {
+                return false;
+            }
         }
         return false;
     }
@@ -75,7 +90,14 @@ public sealed class Input
         }
         else
         {
-            return _keys[key] == KeyDown.Pressed;
+            try
+            {
+                return _keys[key] == KeyDown.Pressed;
+            }
+            catch (KeyNotFoundException)
+            {
+                return false;
+            }
         }
         return false;
     }
